@@ -37,4 +37,4 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo Branch ${{ github.event.input.branch_to_deploy }} and ENV ${{ github.even.inout.env_to_deploy }}
+          echo Branch ${{ github.event.inputs.branch_to_deploy }} and ENV ${{ github.even.inputs.env_to_deploy }}
