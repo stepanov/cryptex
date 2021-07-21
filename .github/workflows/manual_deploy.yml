@@ -20,20 +20,20 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   if: ${{ github.event.inputs.env_to_deploy == 'dev2' }}
-    env:
-      DIR: "my-app-dev2"
-      API_URI: "app-dev2"
-      DB_HOST: "DEV2_DB_HOST"
+  env:
+    DIR: "my-app-dev2"
+    API_URI: "app-dev2"
+    DB_HOST: "DEV2_DB_HOST"
   if: ${{ github.event.inputs.env_to_deploy == 'dev3' }}
-    env:
-      DIR: "my-app-dev3"
-      API_URI: "app-dev3"
-      DB_HOST: "DEV3_DB_HOST"
+  env:
+    DIR: "my-app-dev3"
+    API_URI: "app-dev3"
+    DB_HOST: "DEV3_DB_HOST"
   if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
-    env:
-      DIR: "my-app-dev"
-      API_URI: "app-dev"
-      DB_HOST: "DEV_DB_HOST"
+  env:
+    DIR: "my-app-dev"
+    API_URI: "app-dev"
+    DB_HOST: "DEV_DB_HOST"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
