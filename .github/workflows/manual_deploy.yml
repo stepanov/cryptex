@@ -19,21 +19,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  if: ${{ github.event.inputs.env_to_deploy == 'dev2' }}
-  env:
-    DIR: "my-app-dev2"
-    API_URI: "app-dev2"
-    DB_HOST: "DEV2_DB_HOST"
-  if: ${{ github.event.inputs.env_to_deploy == 'dev3' }}
-  env:
-    DIR: "my-app-dev3"
-    API_URI: "app-dev3"
-    DB_HOST: "DEV3_DB_HOST"
-  if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
-  env:
-    DIR: "my-app-dev"
-    API_URI: "app-dev"
-    DB_HOST: "DEV_DB_HOST"
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -42,7 +27,29 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
-
+      
+      - name: Setup env for dev
+        if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
+        env:
+          DIR: "my-app-dev"
+          API_URI: "app-dev"
+          DB_HOST: "DEV_DB_HOST"
+        run: echo Setup env for dev
+      - name: Setup env for dev2
+        if: ${{ github.event.inputs.env_to_deploy == 'dev2' }}
+        env:
+          DIR: "my-app-dev2"
+          API_URI: "app-dev2"
+          DB_HOST: "DEV2_DB_HOST"
+        run: echo Setup env for dev2
+      - name: Setup env for dev3
+        if: ${{ github.event.inputs.env_to_deploy == 'dev3' }}
+        env:
+          DIR: "my-app-dev3"
+          API_URI: "app-dev3"
+          DB_HOST: "DEV3_DB_HOST"
+        run: Setup env for dev3
+      
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world! 
