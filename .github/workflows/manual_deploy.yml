@@ -58,4 +58,5 @@ jobs:
           echo test, and deploy your project.
           echo Branch ${{ github.event.inputs.branch_to_deploy }} and ENV ${{ github.event.inputs.env_to_deploy }}
           echo "dir=${{ env.target_dir }}; uri=${{ env.api_uri }}; host=${{ env.db_host }}"
-          echo "db host: ${{ secrets[${{ env.db_host }}] }}"
+          DB_HOST = ${{ env.db_host }}
+          echo "db host: ${{ secrets[DB_HOST] }}"
