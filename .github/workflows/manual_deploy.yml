@@ -34,19 +34,28 @@ jobs:
           export DIR=my-app-dev
           export API_URI=app-dev
           export DB_HOST=DEV_DB_HOST
+          echo "::set-env name=DIR::$DIR"
+          echo "::set-env name=API_URI::$API_URI"
+          echo "::set-env name=DB_HOST::$DB_HOST"
       - name: Setup env for dev2
         if: ${{ github.event.inputs.env_to_deploy == 'dev2' }}
         run: |
           export DIR=my-app-dev2
           export API_URI=app-dev2
           export DB_HOST=DEV2_DB_HOST
+          echo "::set-env name=DIR::$DIR"
+          echo "::set-env name=API_URI::$API_URI"
+          echo "::set-env name=DB_HOST::$DB_HOST"
       - name: Setup env for dev3
         if: ${{ github.event.inputs.env_to_deploy == 'dev3' }}
         run: |
           export DIR=my-app-dev3
           export API_URI=app-dev3
           export DB_HOST=DEV3_DB_HOST
-      
+          echo "::set-env name=DIR::$DIR"
+          echo "::set-env name=API_URI::$API_URI"
+          echo "::set-env name=DB_HOST::$DB_HOST"
+          
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, world! 
