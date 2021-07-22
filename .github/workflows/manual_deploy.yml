@@ -28,6 +28,10 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: "Validate input"
+        run: |
+          
+      
       - name: Setup env for dev
         if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
         run: |
@@ -59,4 +63,3 @@ jobs:
           echo Branch ${{ github.event.inputs.branch_to_deploy }} and ENV ${{ github.event.inputs.env_to_deploy }}
           echo "dir=${{ env.target_dir }}; uri=${{ env.api_uri }}; host=${{ env.db_host }}"
           DB_HOST = ${{ env.db_host }}
-          echo "db host: ${{ secrets[${DB_HOST}] }}"
