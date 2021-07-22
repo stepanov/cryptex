@@ -30,7 +30,10 @@ jobs:
       
       - name: "Validate input"
         run: |
-          
+          ENV_TO_DEPLOY = ${{ github.event.inputs.env_to_deploy }}
+          if [[ $ENV_TO_DEPLOY -ne "dev" || $ENV_TO_DEPLOY -ne "dev2" || $ENV_TO_DEPLOY -ne "dev3" ]]
+          then echo "Env to deploy can be dev, dev2 or dev3!" && exit 1
+          fi
       
       - name: Setup env for dev
         if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
@@ -62,4 +65,3 @@ jobs:
           echo test, and deploy your project.
           echo Branch ${{ github.event.inputs.branch_to_deploy }} and ENV ${{ github.event.inputs.env_to_deploy }}
           echo "dir=${{ env.target_dir }}; uri=${{ env.api_uri }}; host=${{ env.db_host }}"
-          DB_HOST = ${{ env.db_host }}
