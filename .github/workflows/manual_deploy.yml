@@ -28,7 +28,13 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
-      - name: "Validate input"
+      - name: "Validate input branch to deploy"
+        run: |
+          git ls-remote --exit-code --heads origin ${{ github.event.inputs.branch_to_deploy }}
+          if [[ $? -eq 2 ]]
+          then "Invalid branch: ${{ github.event.inputs.branch_to_deploy }}!" && exit 1
+      
+      - name: "Validate input env to deploy"
         run: |
           export ENV_TO_DEPLOY=${{ github.event.inputs.env_to_deploy }}
           if [[ $ENV_TO_DEPLOY != "dev" && $ENV_TO_DEPLOY != "dev2" && $ENV_TO_DEPLOY != "dev3" ]]
