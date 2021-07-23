@@ -31,7 +31,7 @@ jobs:
       - name: "Validate input branch to deploy"
         run: |
           git ls-remote --exit-code --heads origin ${{ github.event.inputs.branch_to_deploy }}
-          if [[ $? -eq 2 ]]
+          if [[ $? == 2 ]]
           then "Invalid branch: ${{ github.event.inputs.branch_to_deploy }}!" && exit 1
           fi
       
