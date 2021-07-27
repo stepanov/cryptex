@@ -45,8 +45,8 @@ jobs:
       - id: setup_env  
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) )' .github/workflows/test.json)
-          echo "ENV_DATA=${content}"
-          echo ::set-output name=envJson::{\"include\":$(echo $content[0])}\"
+          echo "ENV_DATA=${content}[0]"
+          echo ::set-output name=envJson::{\"include\":$(echo $content)}\"
           
       - name: "Set env var"
         run: |
