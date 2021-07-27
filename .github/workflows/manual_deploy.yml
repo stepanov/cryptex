@@ -46,7 +46,7 @@ jobs:
           pwd && ls
           env_data=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) )' .github/workflows/test.json)
           echo "ENV_DATA=${env_data}"
-          data=${{ fromJson(env_data) }}
+          data=${{ fromJson($env_data) }}
           echo "ENV_DATA=${data}" >> $GITHUB_ENV
           
       - name: "Setup env for dev"
