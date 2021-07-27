@@ -22,7 +22,7 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+      
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -30,9 +30,9 @@ jobs:
       
       - name: "Validate input branch to deploy"
         run: |
-          git ls-remote --exit-code --heads origin ${{ github.event.inputs.branch_to_deploy }}
-          if [[ $? == 2 ]]
-          then "Invalid branch: ${{ github.event.inputs.branch_to_deploy }}!" && exit 1
+          git branch | grep -w ${{ github.event.inputs.branch_to_deploy }}
+          if [[ $? -ne 0 ]]
+          then echo "No such branch exists: ${{ github.event.inputs.branch_to_deploy }}. Please, specify correct one." && exit 1
           fi
       
       - name: "Validate input env to deploy"
@@ -41,7 +41,11 @@ jobs:
           if [[ $ENV_TO_DEPLOY != "dev" && $ENV_TO_DEPLOY != "dev2" && $ENV_TO_DEPLOY != "dev3" ]]
           then echo "Env to deploy can be dev, dev2 or dev3!" && exit 1
           fi
-      
+      - name: "Setup env"
+        run: |
+          env_data = $(echo ''[{"env":"dev","port":"8099","db_host":"DEV_DB_HOST"},{"env":"dev2","port":"8100","db_host":"DEV2_DB_HOST"},{"env":"dev3","port":"8108","db_host":"DEV3_DB_HOST"}]'' | jq --arg env "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.env==$env) )')
+          echo "ENV_DATA=${env_data}" >> $GIHUB_ENV
+          
       - name: Setup env for dev
         if: ${{ github.event.inputs.env_to_deploy == 'dev' }}
         run: |
@@ -72,3 +76,5 @@ jobs:
           echo test, and deploy your project.
           echo Branch ${{ github.event.inputs.branch_to_deploy }} and ENV ${{ github.event.inputs.env_to_deploy }}
           echo "dir=${{ env.target_dir }}; uri=${{ env.api_uri }}; host=${{ env.db_host }}"
+          env_data=${{ fromJson(env.ENV_DATA) }}
+          echo "port=${{ env_data.port }}"
