@@ -46,11 +46,11 @@ jobs:
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) )' .github/workflows/test.json)
           echo "ENV_DATA=${content}"
-          echo "::set-output name=envJson::$content"
+          echo ::set-output name=envJson::{\"include\":$(echo $content)}\"
           
       - name: "Set env var"
         run: |
-          echo "result = ${{ steps.setup_env.outputs.envJson }}"
+          echo "result = ${{ fromJson(steps.setup_env.outputs.envJson) }}"
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
