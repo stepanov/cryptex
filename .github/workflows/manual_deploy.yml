@@ -40,8 +40,7 @@ jobs:
           export ENV_TO_DEPLOY=${{ github.event.inputs.env_to_deploy }}
           if [[ $ENV_TO_DEPLOY != "dev" && $ENV_TO_DEPLOY != "dev2" && $ENV_TO_DEPLOY != "dev3" ]]
           then echo "Env to deploy can be dev, dev2 or dev3!" && exit 1
-          fi
-          
+          fi          
       - name: "Setup env "
         run: |
           pwd && ls
