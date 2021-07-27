@@ -50,7 +50,8 @@ jobs:
           
       - name: "Set env var"
         run: |
-          echo "result = ${{ fromJson(steps.setup_env.outputs.envJson) }}"
+          result=${{ fromJson(steps.setup_env.outputs.envJson) }}
+          echo "ENV_DATA=$result" >> $GITHUB_ENV
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
