@@ -51,7 +51,6 @@ jobs:
       - name: "Set env var"
         run: |
           result=${{ fromJson(steps.setup_env.outputs.envJson) }}
-          echo "port=${{ toJson($result) }}"
           echo "ENV_DATA=$result" >> $GITHUB_ENV
           
       # Runs a single command using the runners shell
