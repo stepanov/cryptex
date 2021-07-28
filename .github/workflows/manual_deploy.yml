@@ -54,7 +54,7 @@ jobs:
         
       - name: "Set env data"
         run: |
-          env_data=${{ fromJson(steps.get_env_data.outputs.deployment_env) }}
+          env_data=${{ fromJson(steps.get_env_data.outputs.deployment_env).port }}
           echo "env_data=$env_data"
           echo $env_data.port
           echo "ENV_DEV=$env_data" >> $GITHUB_ENV
