@@ -42,13 +42,18 @@ jobs:
           then echo "Env to deploy can be dev, dev2 or dev3!" && exit 1
           fi    
           
-      - name: "Set env data"
+      - name: "Get env data"
+        id: get_env_data
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]' .github/workflows/test.json)
-          echo "content=$content"
-          content=${{ fromJson(content) }}
-          echo "content=$content"
-          echo content.port
+          echo "::set-output name=deployment_env::$content"
+        
+      - name: "Set env data"
+        run: |
+          env_data=${{ fromJson(steps.get_env_data.outputs.deployment_env) }}
+          echo "env_data=$env_data"
+          echo env_data.port
+
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
