@@ -46,9 +46,9 @@ jobs:
         id: get_env_data
         run: |
           JSON=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]' .github/workflows/test.json)
-          JSON="${JSON//'%'/'%25'}"
-          JSON="${JSON//$'\n'/'%0A'}"
-          JSON="${JSON//$'\r'/'%0D'}"
+          JSON="${JSON//$'\n'/''}"
+          JSON="${JSON//$'\r'/''}"
+          JSON="${JSON//$'\s+'/''}"
           echo "JSON=$JSON"
           echo "::set-output name=deployment_env::$JSON"
         
