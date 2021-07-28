@@ -46,6 +46,9 @@ jobs:
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]' .github/workflows/test.json)
           echo "content=$content"
+          content=${{ fromJson($content) }}
+          echo "content=$content"
+          echo content.port
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
