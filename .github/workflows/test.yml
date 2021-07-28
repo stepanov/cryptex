@@ -1,0 +1,49 @@
+name: "[DEV, MANUAL, OPT] Deploy branch to dev"
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch_to_deploy:
+        description: "[REQUIRED] Branch to deploy on dev"
+        required: true
+        default: develop
+      env_to_deploy:
+        description: "[REQUIRED] Dev server to deploy the branch"
+        required: true
+        default: dev
+jobs:
+  deploy_to_dev:
+    name: "Deploy to ${{ github.event.inputs.env_to_deploy }}"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check if branch_to_deploy is valid branch"
+        run: |
+          git branch | grep -w ${{ github.event.inputs.branch_to_deploy }}
+          if [ $? -ne 0 ]
+          then echo "No such branch exists: ${{ github.event.inputs.branch_to_deploy }}. Please, specify correct one." && exit 1
+          fi
+
+      - name: "Get environemt for deploy"
+        id: setup_deploy_env
+        run: |
+          json="$(cat .github/configs/deploy_envs.json)"
+          deployEnvJson=$(echo $json | jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]')
+
+          if [ -z deployEnvJson ]
+          then
+            echo "Available deployment environments are ${ json.*.deployEnv }" && exit 1
+          fi
+
+          echo "::set-output name=deployEnvJson::deployEnvJson"
+
+      - name: "Setup common env vars"
+        run: |
+          echo "TARGET_DIR=my-app-${{ github.event.inputs.env_to_deploy }}" >> $GITHUB_ENV
+          echo "API_URI=app-${{ github.event.inputs.env_to_deploy }}" >> $GITHUB_ENV
+          echo "DOCKER_SUFFIX=-${{ github.event.inputs.env_to_deploy }}" >> $GITHUB_ENV
+
+      - name: "Setup env for deploy"
+        run: |
+          deployEnv=${{ fromJson(steps.get_env_data.outputs.deployEnvJson) }}
+          echo "DOCKER_PORT=${deployEnv.port}" >> $GITHUB_ENV
+          echo "DEV_DB_HOST=${deployEnv.db_host}" >> $GITHUB_ENV
