@@ -20,7 +20,7 @@ jobs:
         id: setup_deploy_env
         run: |
           ls
-          json="$(cat .github/workflows/test.json)"
+          json="$(cat test.json)"
           deployEnvJson=$(echo $json | jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]')
 
           if [ -z deployEnvJson ]
