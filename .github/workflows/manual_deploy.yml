@@ -42,7 +42,7 @@ jobs:
           then echo "Env to deploy can be dev, dev2 or dev3!" && exit 1
           fi    
           
-      - name: "Set env"
+      - name: "Set env data"
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]' .github/workflows/test.json)
           echo "ENV_DATA=${content}" >> $GITHUB_ENV
