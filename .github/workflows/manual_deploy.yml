@@ -45,7 +45,7 @@ jobs:
       - name: "Set env data"
         run: |
           content=$(jq --arg inputEnv "${{ github.event.inputs.env_to_deploy }}" 'map(. | select(.deployEnv==$inputEnv) ) | .[0]' .github/workflows/test.json)
-          echo "ENV_DATA=${content}" >> $GITHUB_ENV
+          echo "PORT=${content.port}" >> $GITHUB_ENV
           
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -54,5 +54,4 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo "ENV_DATA=${{ toJson(env.ENV_DATA) }}"
-          echo "port=${{ env.ENV_DATA.port }}"          
+          echo "port=${{ env.PORT }}"          
