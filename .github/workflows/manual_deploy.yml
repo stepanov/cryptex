@@ -56,7 +56,7 @@ jobs:
         run: |
           env_data=${{ fromJson(steps.get_env_data.outputs.deployment_env) }}
           echo "env_data=$env_data"
-          echo $env_data.port
+          echo ${{ env_data.port }}
 
           
       # Runs a single command using the runners shell
