@@ -16,13 +16,6 @@ jobs:
     name: "Deploy to ${{ github.event.inputs.env_to_deploy }}"
     runs-on: ubuntu-latest
     steps:
-      - name: "Check if branch_to_deploy is valid branch"
-        run: |
-          git branch | grep -w ${{ github.event.inputs.branch_to_deploy }}
-          if [ $? -ne 0 ]
-          then echo "No such branch exists: ${{ github.event.inputs.branch_to_deploy }}. Please, specify correct one." && exit 1
-          fi
-
       - name: "Get environemt for deploy"
         id: setup_deploy_env
         run: |
